@@ -7,7 +7,7 @@ export default function ForgotPassword() {
   const [step, setStep] = useState('send')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
   const send = async e => {
     e.preventDefault(); setLoading(true); setError('')

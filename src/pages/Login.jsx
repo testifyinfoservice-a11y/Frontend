@@ -10,7 +10,7 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const showAdmin = new URLSearchParams(location.search).get('admin') === '1'
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
   const submit = async e => {
     e.preventDefault()

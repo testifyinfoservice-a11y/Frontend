@@ -6,7 +6,7 @@ export default function Address(){
   const [list, setList] = useState([])
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
   const set = (k) => (e) => setForm(prev => ({ ...prev, [k]: e.target.value }))
   useEffect(()=>{ (async()=>{ try{ const r=await fetch(`${API}/api/account/address`,{credentials:'include'}); const d=await r.json(); if(!r.ok) throw new Error(d.message||'Failed'); setList(d.addresses||[]) }catch(err){ setError(err.message) } })() },[])
   const submit = async e => {

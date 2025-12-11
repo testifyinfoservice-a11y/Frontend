@@ -7,7 +7,7 @@ export default function Home() {
   const [query, setQuery] = useState('')
   const [authed, setAuthed] = useState(false)
   const navigate = useNavigate()
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
   useEffect(()=>{ (async()=>{ try{ const r=await fetch(`${API}/api/me`,{credentials:'include'}); if(r.ok) setAuthed(true); else setAuthed(false) }catch{ setAuthed(false) } })() },[])
   return (
     <div className="container">

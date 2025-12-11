@@ -6,7 +6,7 @@ export default function AdminDashboard(){
   const [providers, setProviders] = useState([])
   const [orders, setOrders] = useState([])
   const [error, setError] = useState('')
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
   
   const load = async () => {
     setError('')

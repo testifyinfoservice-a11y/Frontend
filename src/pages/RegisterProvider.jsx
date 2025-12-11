@@ -13,7 +13,7 @@ export default function RegisterProvider() {
   const [loading, setLoading] = useState(false)
   const [hint, setHint] = useState('')
   const navigate = useNavigate()
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
   const register = async e => {
     e.preventDefault(); setLoading(true); setError('')

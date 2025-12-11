@@ -14,7 +14,7 @@ export default function ServiceDetail(){
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const API = import.meta.env.VITE_API_URL || ''
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
   useEffect(()=>{
     ;(async()=>{
