@@ -10,19 +10,19 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const showAdmin = new URLSearchParams(location.search).get('admin') === '1'
+  const API = import.meta.env.VITE_API_URL || ''
 
   const submit = async e => {
     e.preventDefault()
     setLoading(true); setError('')
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST', headers: { 'Content-Type':'application/json' },
+      const res = await fetch(`${API}/api/auth/login`, {
+        method: 'POST', headers: { 'Content-Type':'application/json' }, credentials:'include',
         body: JSON.stringify({ email, password, role })
       })
       let data = {}
       try { data = await res.json() } catch {}
       if (!res.ok) throw new Error(data.message || `${res.status} ${res.statusText}`)
-      localStorage.setItem('token', data.token)
       localStorage.setItem('role', data.role)
       navigate('/')
     } catch (err) {

@@ -14,10 +14,11 @@ export default function ServiceDetail(){
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const API = import.meta.env.VITE_API_URL || ''
 
   useEffect(()=>{
     ;(async()=>{
-      const r = await fetch('/api/services')
+      const r = await fetch(`${API}/api/services`)
       const d = await r.json()
       const s = d.services.find(x=>x.id===id)
       setService(s || null)
@@ -25,14 +26,14 @@ export default function ServiceDetail(){
   }, [id])
 
   useEffect(()=>{
-    ;(async()=>{ try{ const r=await fetch('/api/account/address',{credentials:'include'}); const d=await r.json(); if(r.ok) setSaved(d.addresses||[]) }catch{} })()
+    ;(async()=>{ try{ const r=await fetch(`${API}/api/account/address`,{credentials:'include'}); const d=await r.json(); if(r.ok) setSaved(d.addresses||[]) }catch{} })()
     try{ const raw = window.localStorage.getItem('selectedAddress'); if(raw){ const a=JSON.parse(raw); setAddress(a.address||''); setPincode(a.pincode||''); setLandmark(a.landmark||''); setCity(a.city||''); setState(a.state||'') } }catch{}
   },[])
 
   const book = async e => {
     e.preventDefault(); setLoading(true); setError('')
     try {
-      const r = await fetch('/api/orders', {
+      const r = await fetch(`${API}/api/orders`, {
         method:'POST', headers:{ 'Content-Type':'application/json' }, credentials:'include',
         body: JSON.stringify({ serviceId: id, address, pincode, landmark, city, state, phone })
       })

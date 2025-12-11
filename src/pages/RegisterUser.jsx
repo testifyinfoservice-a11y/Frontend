@@ -13,18 +13,19 @@ export default function RegisterUser() {
   const [loading, setLoading] = useState(false)
   const [hint, setHint] = useState('')
   const navigate = useNavigate()
+  const API = import.meta.env.VITE_API_URL || ''
 
   const register = async e => {
     e.preventDefault(); setLoading(true); setError('')
     try {
-      const res = await fetch('/api/auth/register', {
-        method:'POST', headers:{'Content-Type':'application/json'},
+      const res = await fetch(`${API}/api/auth/register`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
         body: JSON.stringify({ role, name, email, phone, password })
       })
       let data = {}
       try { data = await res.json() } catch {}
       if(!res.ok) throw new Error(data.message || `${res.status} ${res.statusText}`)
-      const r2 = await fetch('/api/auth/send-otp', {
+      const r2 = await fetch(`${API}/api/auth/send-otp`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ phone, context:'register' })
       })
@@ -39,7 +40,7 @@ export default function RegisterUser() {
   const verifyOtp = async e => {
     e.preventDefault(); setLoading(true); setError('')
     try {
-      const res = await fetch('/api/auth/verify-otp', {
+      const res = await fetch(`${API}/api/auth/verify-otp`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ phone, otp, context:'register' })
       })

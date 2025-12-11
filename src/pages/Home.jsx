@@ -7,7 +7,8 @@ export default function Home() {
   const [query, setQuery] = useState('')
   const [authed, setAuthed] = useState(false)
   const navigate = useNavigate()
-  useEffect(()=>{ (async()=>{ try{ const r=await fetch('/api/me',{credentials:'include'}); if(r.ok) setAuthed(true); else setAuthed(false) }catch{ setAuthed(false) } })() },[])
+  const API = import.meta.env.VITE_API_URL || ''
+  useEffect(()=>{ (async()=>{ try{ const r=await fetch(`${API}/api/me`,{credentials:'include'}); if(r.ok) setAuthed(true); else setAuthed(false) }catch{ setAuthed(false) } })() },[])
   return (
     <div className="container">
       <div className="top-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>

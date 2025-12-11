@@ -6,20 +6,21 @@ export default function AdminDashboard(){
   const [providers, setProviders] = useState([])
   const [orders, setOrders] = useState([])
   const [error, setError] = useState('')
+  const API = import.meta.env.VITE_API_URL || ''
   
   const load = async () => {
     setError('')
     try {
-      const r1 = await fetch('/api/admin/providers', { credentials:'include' } )
+      const r1 = await fetch(`${API}/api/admin/providers`, { credentials:'include' } )
       const d1 = await r1.json(); if(!r1.ok) throw new Error(d1.message || 'Failed to load')
       setPending(d1.pending || [])
-      const r2 = await fetch('/api/admin/users', { credentials:'include' } )
+      const r2 = await fetch(`${API}/api/admin/users`, { credentials:'include' } )
       const d2 = await r2.json(); if(!r2.ok) throw new Error(d2.message || 'Failed to load users')
       setUsers(d2.users || [])
-      const r3 = await fetch('/api/admin/providers/all', { credentials:'include' } )
+      const r3 = await fetch(`${API}/api/admin/providers/all`, { credentials:'include' } )
       const d3 = await r3.json(); if(!r3.ok) throw new Error(d3.message || 'Failed to load providers')
       setProviders(d3.providers || [])
-      const r4 = await fetch('/api/admin/orders', { credentials:'include' } )
+      const r4 = await fetch(`${API}/api/admin/orders`, { credentials:'include' } )
       const d4 = await r4.json(); if(!r4.ok) throw new Error(d4.message || 'Failed to load orders')
       setOrders(d4.orders || [])
     } catch(err){ setError(err.message) }
@@ -28,7 +29,7 @@ export default function AdminDashboard(){
 
   const approve = async (id) => {
     try {
-      const r = await fetch(`/api/admin/providers/${id}/approve`, {
+      const r = await fetch(`${API}/api/admin/providers/${id}/approve`, {
         method:'POST', credentials:'include'
       })
       const d = await r.json(); if(!r.ok) throw new Error(d.message || 'Approve failed')

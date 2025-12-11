@@ -6,15 +6,16 @@ export default function Address(){
   const [list, setList] = useState([])
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const API = import.meta.env.VITE_API_URL || ''
   const set = (k) => (e) => setForm(prev => ({ ...prev, [k]: e.target.value }))
-  useEffect(()=>{ (async()=>{ try{ const r=await fetch('/api/account/address',{credentials:'include'}); const d=await r.json(); if(!r.ok) throw new Error(d.message||'Failed'); setList(d.addresses||[]) }catch(err){ setError(err.message) } })() },[])
+  useEffect(()=>{ (async()=>{ try{ const r=await fetch(`${API}/api/account/address`,{credentials:'include'}); const d=await r.json(); if(!r.ok) throw new Error(d.message||'Failed'); setList(d.addresses||[]) }catch(err){ setError(err.message) } })() },[])
   const submit = async e => {
     e.preventDefault()
     setError('')
     try{
-      const r = await fetch('/api/account/address', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({ id: form.id || undefined, address: form.address, city: form.city, state: form.state, pincode: form.pincode, landmark: form.landmark }) })
+      const r = await fetch(`${API}/api/account/address`, { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({ id: form.id || undefined, address: form.address, city: form.city, state: form.state, pincode: form.pincode, landmark: form.landmark }) })
       const d = await r.json(); if(!r.ok) throw new Error(d.message||'Save failed')
-      const r2 = await fetch('/api/account/address', { credentials:'include' }); const d2 = await r2.json(); setList(d2.addresses||[])
+      const r2 = await fetch(`${API}/api/account/address`, { credentials:'include' }); const d2 = await r2.json(); setList(d2.addresses||[])
       setForm({ address:'', city:'', state:'', pincode:'', landmark:'', id:'' })
     } catch(err){ setError(err.message) }
   }
