@@ -6,11 +6,12 @@ export default function Account(){
   const [me, setMe] = useState(null)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
   useEffect(()=>{
     ;(async()=>{
       try {
-        const r = await fetch('/api/me', { credentials:'include' })
+        const r = await fetch(`${API}/api/me`, { credentials:'include' })
         const d = await r.json(); if(!r.ok) throw new Error(d.message || 'Failed to load')
         setMe(d)
       } catch(err){ setError(err.message.includes('401') ? 'Login required' : err.message) }
@@ -74,7 +75,7 @@ export default function Account(){
       </div>
       {me && (
         <div style={{marginTop:16}}>
-          <button onClick={async()=>{ try { await fetch('/api/auth/logout', { method:'POST', credentials:'include' }) } catch{} navigate('/login') }}>Logout</button>
+          <button onClick={async()=>{ try { await fetch(`${API}/api/auth/logout`, { method:'POST', credentials:'include' }) } catch{} navigate('/login') }}>Logout</button>
         </div>
       )}
       {!me && !error && (<div style={{color:'#b5b6ba'}}>Loading...</div>)}
