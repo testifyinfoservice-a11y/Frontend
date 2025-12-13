@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 export default function Reports(){
   const [orders, setOrders] = useState([])
   const [error, setError] = useState('')
+  const API = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
   useEffect(()=>{ (async()=>{
-    try{ const r = await fetch('/api/orders', { credentials:'include' }); const d = await r.json(); if(!r.ok) throw new Error(d.message || 'Failed to load'); setOrders(d.orders||[]) }
+    try{ const r = await fetch(`${API}/api/orders`, { credentials:'include' }); const d = await r.json(); if(!r.ok) throw new Error(d.message || 'Failed to load'); setOrders(d.orders||[]) }
     catch(err){ setError(err.message.includes('401')?'Login required':err.message) }
   })() },[])
   const total = orders.length
